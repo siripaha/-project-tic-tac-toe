@@ -1,7 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-
 function Square(props) {
     return (
         <button className="square" onClick={props.onClick}>
@@ -68,14 +64,32 @@ class Square extends React.Component {
         xIsNext: true,
       };
     }
-      handleClick(i) {
-        const updatesquares = this.state.squares.slice();
-        updatesquares[i] = this.state.xIsNext ? 'X' : 'O';
-        this.setState({
-          squares: updatesquares,
-          xIsNext: !this.state.xIsNext,
-        });
-      }
+      render() {
+    const history = this.state.history;
+    const current = history[history.length - 1];
+    const winner = calculateWinner(current.squares);
+    let status;
+    if (winner) {
+      status = 'Winner: ' + winner;
+    } else {
+      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+    }
+
+    return (
+      <div className="game">
+        <div className="game-board">
+          <Board
+            squares={current.squares}
+            onClick={(i) => this.handleClick(i)}
+          />
+        </div>
+        <div className="game-info">
+          <div>{status}</div>
+          <ol>{/* TODO */}</ol>
+        </div>
+      </div>
+    );
+  }
 
 
 
